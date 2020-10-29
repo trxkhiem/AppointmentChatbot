@@ -10,19 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.customproject.R
 import com.example.customproject.data.Appointment
 import com.example.customproject.data.Timetable
+import com.example.customproject.utils.Constants.UPDATE
+import com.example.customproject.utils.Constants.VERIFY
 import kotlinx.android.synthetic.main.activity_appointment_form.*
 
 class DetailsActivity : AppCompatActivity() {
-    companion object{
-        const val UPDATE = "Updating"
-    }
     lateinit var appoint : Appointment
     private lateinit var appointmentVM: appointmentViewModel
     private lateinit var timeVM: timeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_details)
-        appoint = intent.getParcelableExtra<Appointment>(verifyActivity.VERIFY)!!
+        appoint = intent.getParcelableExtra<Appointment>(VERIFY)!!
         appointmentVM = ViewModelProvider(this).get(appointmentViewModel::class.java)
         timeVM = ViewModelProvider(this).get(timeViewModel::class.java)
         val update = findViewById<Button>(R.id.btn_update)

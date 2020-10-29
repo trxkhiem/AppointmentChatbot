@@ -9,7 +9,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/timeList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="130dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="28dp"
+        android:background="@android:color/holo_orange_light"
+        android:text="return"
+        android:textColor="@android:color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeList" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

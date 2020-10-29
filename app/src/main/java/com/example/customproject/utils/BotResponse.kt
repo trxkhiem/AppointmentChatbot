@@ -26,6 +26,10 @@ object BotResponse {
                 }
             }
 
+            msg.contains("view complete") -> {
+                "Is there anything else that I can help you with?"
+            }
+
             msg.contains("update complete") -> {
                 "You have successfully updated the appointment. Is there anything else that I can help you with?"
             }

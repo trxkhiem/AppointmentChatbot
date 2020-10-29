@@ -10,13 +10,10 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.customproject.R
+import com.example.customproject.utils.Constants.UPDATE
+import com.example.customproject.utils.Constants.VERIFY
 
 class verifyActivity : AppCompatActivity() {
-    companion object{
-        const val VERIFY = "Verifying"
-        const val UPDATE = "Updating"
-    }
-
     private lateinit var appointmentVM: appointmentViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -46,4 +46,12 @@ class appointmentViewModel(application: Application): AndroidViewModel(applicati
             repository.deleteAppointment(appoint)
         }
     }
+
+    fun checkEmail(email: String) : LiveData<Appointment>{
+        return repository.checkEmail(email)
+    }
+
+    fun checkPhone(phone: String) : LiveData<Appointment>{
+        return repository.checkPhone(phone)
+    }
 }

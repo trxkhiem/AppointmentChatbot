@@ -20,4 +20,9 @@ interface appointmentDao {
     @Delete
     fun deleteAppointment(appointment: Appointment)
 
+    @Query("SELECT * FROM Appointment WHERE phone = :phone")
+    fun checkPhone(phone: String): LiveData<Appointment>
+
+    @Query("SELECT * FROM Appointment WHERE email =:userEmail")
+    fun checkEmail(userEmail: String): LiveData<Appointment>
 }

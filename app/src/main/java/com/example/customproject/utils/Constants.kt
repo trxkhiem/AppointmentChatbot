@@ -11,5 +11,8 @@ object Constants {
     const val VIEW_TIMETABLE = "Viewing available time..."
     const val CANCEL_APPOINTMENT = "Canceling Appointment...."
     const val UPDATE_APPOINTMENT = "Updating Appointment..."
-
+    const val ADD = "Add Appointment"
+    const val UPDATE = "Updating"
+    const val VERIFY = "Verifying"
+    const val VIEWING = "Viewing"
 }

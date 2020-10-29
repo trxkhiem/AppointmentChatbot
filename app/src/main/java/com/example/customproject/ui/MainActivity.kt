@@ -2,22 +2,21 @@ package com.example.customproject.ui
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.customproject.R
 import com.example.customproject.data.Message
-import com.example.customproject.data.Timetable
 import com.example.customproject.data.timeList.timelists
 import com.example.customproject.utils.BotResponse
+import com.example.customproject.utils.Constants.ADD
 import com.example.customproject.utils.Constants.ADD_APPOINTMENT
-import com.example.customproject.utils.Constants.OPEN_GOOGLE
-import com.example.customproject.utils.Constants.OPEN_SEARCH
 import com.example.customproject.utils.Constants.RECEIVE_ID
 import com.example.customproject.utils.Constants.SEND_ID
 import com.example.customproject.utils.Constants.UPDATE_APPOINTMENT
+import com.example.customproject.utils.Constants.VERIFY
+import com.example.customproject.utils.Constants.VIEWING
 import com.example.customproject.utils.Constants.VIEW_APPOINTMENT
 import com.example.customproject.utils.Constants.VIEW_TIMETABLE
 import com.example.customproject.utils.Time
@@ -29,10 +28,6 @@ class MainActivity : AppCompatActivity() {
     var msgList = mutableListOf<Message>()
     private val TAG = "MainActivity"
     private lateinit var adt: MessagingAdapter
-    companion object{
-        const val ADD = "Add Appointment"
-        const val VERIFY = "Verifying"
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -124,18 +119,6 @@ class MainActivity : AppCompatActivity() {
 
                 //Starts Google
                 when (res) {
-                    OPEN_GOOGLE -> {
-                        val site = Intent(Intent.ACTION_VIEW)
-                        site.data = Uri.parse("https://www.google.com/")
-                        startActivity(site)
-                    }
-                    OPEN_SEARCH -> {
-                        val site = Intent(Intent.ACTION_VIEW)
-                        val searchTerm: String? = message.substringAfterLast("search")
-                        site.data = Uri.parse("https://www.google.com/search?&q=$searchTerm")
-                        startActivity(site)
-                    }
-
                     ADD_APPOINTMENT-> {
                         val intent = Intent(this@MainActivity, AppointmentFormActivity::class.java)
                         startActivityForResult(intent, 1)
@@ -153,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 
                     VIEW_TIMETABLE->{
                         val intent = Intent(this@MainActivity, ViewDate::class.java)
-                        startActivity(intent)
+                        startActivityForResult(intent, 3)
                     }
                 }
             }
@@ -170,6 +153,12 @@ class MainActivity : AppCompatActivity() {
         }
         if (requestCode == 2){
             val msg =data?.getStringExtra(VERIFY)
+            if (msg != null) {
+                botResponse(msg)
+            }
+        }
+        if (requestCode == 3){
+            val msg =data?.getStringExtra(VIEWING)
             if (msg != null) {
                 botResponse(msg)
             }
