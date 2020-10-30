@@ -1,5 +1,6 @@
 package com.example.customproject.ui
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customproject.R
 import com.example.customproject.data.Timetable
+import com.google.android.material.snackbar.Snackbar
 
 class ViewDateAdapter(): RecyclerView.Adapter<ViewDateAdapter.ViewHolder>() {
 
@@ -53,10 +55,31 @@ class ViewDateAdapter(): RecyclerView.Adapter<ViewDateAdapter.ViewHolder>() {
                 image.setImageResource(R.mipmap.cross_foreground)
             }
         }
-        /**on click function will be called when user clicks on a specific row
-         * A snack bar will show up with the message of corresponding location**/
-
         override fun onClick(v: View) {
+            if (item.isAvailable == 1){
+                val snackBar = Snackbar.make(v, "The session on ${item.day} at: ${item.time} is unavailable",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+                snackBar.setActionTextColor(Color.BLACK)
+                val snackBarView = snackBar.view
+                /**Below are customize of the snack bar**/
+                snackBarView.setBackgroundColor(Color.RED)
+                val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                textView.setTextColor(Color.WHITE)
+                snackBar.show()
+            } else {
+                val snackBar = Snackbar.make(v, "The session on ${item.day} at: ${item.time} is available",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null)
+                snackBar.setActionTextColor(Color.BLACK)
+                val snackBarView = snackBar.view
+                /**Below are customize of the snack bar**/
+                snackBarView.setBackgroundColor(Color.GREEN)
+                val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                textView.setTextColor(Color.BLACK)
+                snackBar.show()
+            }
+
         }
 
     }
