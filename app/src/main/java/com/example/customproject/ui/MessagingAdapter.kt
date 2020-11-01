@@ -24,7 +24,9 @@ class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         val currMsg = messageList[position]
+        //check whether the current message is send or receive message
         when (currMsg.id){
+            //if the message is a send message, then the bot message disappears
             SEND_ID->{
                 holder.itemView.tv_message.apply{
                     text = currMsg.message
@@ -32,7 +34,7 @@ class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>
                 }
                 holder.itemView.tv_bot_message.visibility = View.GONE
             }
-
+            //if the message is a receive message, then the tv message disappears
             RECEIVE_ID ->{
                 holder.itemView.tv_bot_message.apply{
                     text = currMsg.message
@@ -44,13 +46,17 @@ class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>
     }
 
     fun addMessage(message: Message){
+        // add the new message
         this.messageList.add(message)
+        // bring to the newest message.
         notifyItemInserted(messageList.size)
     }
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         init {
             itemView.setOnClickListener {
+                // remove the item from the the position it was clicked on which get the most recent position of the item you're clicking on
                 messageList.removeAt(adapterPosition)
+                // give a nice animation
                 notifyItemRemoved(adapterPosition)
             }
         }

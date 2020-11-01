@@ -12,6 +12,7 @@ import com.example.customproject.data.timeList.timelists
 import com.example.customproject.utils.BotResponse
 import com.example.customproject.utils.Constants.ADD
 import com.example.customproject.utils.Constants.ADD_APPOINTMENT
+import com.example.customproject.utils.Constants.CANCEL_APPOINTMENT
 import com.example.customproject.utils.Constants.RECEIVE_ID
 import com.example.customproject.utils.Constants.SEND_ID
 import com.example.customproject.utils.Constants.UPDATE_APPOINTMENT
@@ -35,7 +36,10 @@ class MainActivity : AppCompatActivity() {
         clickEvents()
         TimetableViewModel = ViewModelProvider(this).get(timeViewModel::class.java)
         TimetableViewModel.addTimeList(timelists)
-        customMessage("Hello! Today you are speaking with Lichscaa, how may I help you?")
+        customMessage(
+            "Hello! Today you are speaking with Lichscaa, I am here to assist you with your appointment process.\n" +
+                    "You can either add, delete, update, view an appointment and check available time"
+        )
     }
 
 
@@ -64,9 +68,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun customMessage(s: String) {
         GlobalScope.launch {
+            // delay message 1 second
             delay(1000)
+            //switch it to the main thread and update the UI
             launch(Dispatchers.Main){
+                // get the time stamp
                 val timeStamp = Time.timing()
+                // add the message to the adapter
                 msgList.add(Message(s, RECEIVE_ID, timeStamp))
                 adt.addMessage(Message(s, RECEIVE_ID, timeStamp))
                 rv_messages.scrollToPosition(adt.itemCount - 1)
@@ -76,16 +84,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendMsg() {
+        //get the value of the message
         val message = et_message.text.toString()
         val timeStamp = Time.timing()
-
         if (message.isNotEmpty()) {
             //Adds it to our local list
             msgList.add(Message(message, SEND_ID, timeStamp))
             et_message.setText("")
-
+            // add the message to the adaoter
             adt.addMessage(Message(message, SEND_ID, timeStamp))
             rv_messages.scrollToPosition(adt.itemCount - 1)
+            // the bot will response base on the send message
             botResponse(message)
         }
     }
@@ -106,7 +115,6 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch {
             //Fake response delay
             delay(1000)
-
             launch(Dispatchers.Main) {
                 //Gets the response
                 val res = BotResponse.basicResponses(message)
@@ -116,8 +124,7 @@ class MainActivity : AppCompatActivity() {
                 adt.addMessage(Message(res, RECEIVE_ID, timeS))
                 //Scrolls us to the position of the latest message
                 rv_messages.scrollToPosition(adt.itemCount - 1)
-
-                //Starts Google
+                // determine the which commands from the user has been used.
                 when (res) {
                     ADD_APPOINTMENT-> {
                         val intent = Intent(this@MainActivity, AppointmentFormActivity::class.java)
@@ -134,6 +141,11 @@ class MainActivity : AppCompatActivity() {
                         startActivityForResult(intent, 2)
                     }
 
+                    CANCEL_APPOINTMENT->{
+                        val intent = Intent(this@MainActivity, verifyActivity::class.java)
+                        startActivityForResult(intent, 2)
+                    }
+
                     VIEW_TIMETABLE->{
                         val intent = Intent(this@MainActivity, ViewDate::class.java)
                         startActivityForResult(intent, 3)
@@ -143,8 +155,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // get the values from the second activity
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode != Activity.RESULT_OK) return
+        // request code to determine which scenario has been called
         if (requestCode == 1){
             val msg =data?.getStringExtra(ADD)
             if (msg != null) {

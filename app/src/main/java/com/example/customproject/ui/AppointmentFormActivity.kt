@@ -19,7 +19,7 @@ import kotlin.properties.Delegates
 class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener{
     private lateinit var appointmentVM: appointmentViewModel
     private lateinit var timeVM: timeViewModel
-    var active = false
+    //declare arrays for days and time
     var list_of_days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
     var list_of_time = arrayOf("9:00", "10:00", "11:00", "12:00", "13:00","14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00")
     private var DayoW ="Monday"
@@ -30,6 +30,7 @@ class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedLi
         setContentView(R.layout.activity_appointment_form)
         dayInput!!.setOnItemSelectedListener(this)
         timeInput!!.setOnItemSelectedListener(this)
+        //initialise the view model class
         appointmentVM = ViewModelProvider(this).get(appointmentViewModel::class.java)
         timeVM = ViewModelProvider(this).get(timeViewModel::class.java)
         // Create an ArrayAdapter using a simple spinner layout and days array
@@ -48,6 +49,7 @@ class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedLi
         dayInput!!.setAdapter(dayList)
         timeInput!!.setAdapter(timeList)
         submit.setOnClickListener {
+            //reset is used to control the live data
             timeVM.reset()
             if (userPhone.text.length < 7) {
                 Toast.makeText(this, "Please enter valid phone number", Toast.LENGTH_LONG).show()
@@ -63,18 +65,22 @@ class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedLi
                     var appointTime = it
                     appointmentVM.getAppointment(userEmail.text.toString(), userPhone.text.toString()).observe(this, Observer {
                         var checkAppoint = it
+                        //return finished is a variable that is used to control the observer of live data
                         if (timeVM.returnFinished() == 0){
+                            //check whether the register session is available
                             if (appointTime == null || appointTime.isAvailable == 1) {
                                 Toast.makeText(this, "the chosen time is unavailable, please choose another one", Toast.LENGTH_LONG).show()
+                            // check if the email and phone are already used
                             } else if (checkAppoint != null) {
                                 Toast.makeText(this, "The email and phone number has been used already. Please try the different one", Toast.LENGTH_LONG).show()
-                            } else if (timeVM.returnFinished() == 0){
+                            } else{
                                 val id = appointTime.id
                                 val day = appointTime.day
                                 val time = appointTime.time
                                 val timetable = Timetable(id, day, time, 1)
                                 if (timetable != null) {
                                     timeVM.change()
+                                    //make the register session time no longer available
                                     timeVM.updateTime(timetable)
                                     val appoint = Appointment(0, userName.text.toString(), userEmail.text.toString(), userPhone.text.toString(), reason.text.toString(), DayoW, TimeoD)
                                     appointmentVM.addAppointment(appoint)
@@ -131,25 +137,5 @@ class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedLi
         }
         setResult(Activity.RESULT_OK, returnIntent)
         super.onBackPressed()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        active = true
-    }
-
-    override fun onStop() {
-        super.onStop()
-        active = false
-    }
-
-    override fun onPause() {
-        super.onPause()
-        active = false
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        active = false
     }
 }
