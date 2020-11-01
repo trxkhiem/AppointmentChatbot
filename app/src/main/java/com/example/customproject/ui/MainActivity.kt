@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         btn_send.setOnClickListener {
             sendMsg()
         }
-
         //Scroll back to correct position when user clicks on text view
         et_message.setOnClickListener {
             GlobalScope.launch {

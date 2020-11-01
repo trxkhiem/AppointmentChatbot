@@ -10,7 +10,6 @@ object Time {
         val timing = Timestamp(System.currentTimeMillis())
         val dateFormat = SimpleDateFormat("HH:mm")
         val time = dateFormat.format(Date(timing.time))
-
         return time.toString()
     }
 }

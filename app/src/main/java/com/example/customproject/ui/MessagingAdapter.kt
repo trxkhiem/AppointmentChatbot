@@ -1,14 +1,17 @@
 package com.example.customproject.ui
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customproject.R
 import com.example.customproject.data.Message
 import com.example.customproject.utils.Constants.RECEIVE_ID
 import com.example.customproject.utils.Constants.SEND_ID
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.message_item.view.*
 
 class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>() {
@@ -51,13 +54,33 @@ class MessagingAdapter: RecyclerView.Adapter<MessagingAdapter.MessageViewHolder>
         // bring to the newest message.
         notifyItemInserted(messageList.size)
     }
+
     inner class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         init {
             itemView.setOnClickListener {
-                // remove the item from the the position it was clicked on which get the most recent position of the item you're clicking on
-                messageList.removeAt(adapterPosition)
-                // give a nice animation
-                notifyItemRemoved(adapterPosition)
+                if (messageList[adapterPosition].id == SEND_ID){
+                    val snackBar = Snackbar.make(itemView, "Your message was sent at ${messageList[adapterPosition].timing}",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null)
+                    snackBar.setActionTextColor(Color.BLACK)
+                    val snackBarView = snackBar.view
+                    /**Below are customize of the snack bar**/
+                    snackBarView.setBackgroundColor(Color.DKGRAY)
+                    val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                    textView.setTextColor(Color.WHITE)
+                    snackBar.show()
+                } else {
+                    val snackBar = Snackbar.make(itemView, "The Chatbot's message was sent at ${messageList[adapterPosition].timing}",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null)
+                    snackBar.setActionTextColor(Color.BLACK)
+                    val snackBarView = snackBar.view
+                    /**Below are customize of the snack bar**/
+                    snackBarView.setBackgroundColor(Color.DKGRAY)
+                    val textView = snackBarView.findViewById(com.google.android.material.R.id.snackbar_text) as TextView
+                    textView.setTextColor(Color.WHITE)
+                    snackBar.show()
+                }
             }
         }
     }
