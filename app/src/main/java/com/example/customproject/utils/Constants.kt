@@ -15,4 +15,5 @@ object Constants {
     const val UPDATE = "Updating"
     const val VERIFY = "Verifying"
     const val VIEWING = "Viewing"
+    const val LOGGING = "Logging"
 }

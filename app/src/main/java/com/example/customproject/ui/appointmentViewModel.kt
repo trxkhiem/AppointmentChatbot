@@ -16,13 +16,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class appointmentViewModel(application: Application): AndroidViewModel(application) {
-    //val readAllData: LiveData<List<Timetable>>
+    val readAllData: LiveData<List<Appointment>>
     private val repository: appointmentRepository
 
     init {
         val appointmentDAO = appointmentDatabase.getDatabase(application).appointmentDao()
         repository = appointmentRepository(appointmentDAO)
-        //readAllData = repository.
+        readAllData = repository.getAll()
     }
 
     fun addAppointment(appoint: Appointment) {

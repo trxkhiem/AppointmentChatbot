@@ -15,14 +15,23 @@ import kotlinx.coroutines.launch
 class timeViewModel(application: Application): AndroidViewModel(application) {
     val readAllData: LiveData<List<Timetable>>
     var finished: Int
+    var chatbot: Int
     private val repository: timetableRepository
     init {
         val timeDAO = timeDatabase.getDatabase(application).timetableDao()
         repository = timetableRepository(timeDAO)
         readAllData = repository.getTimetable()
         finished = 0
+        chatbot = 1
     }
 
+    fun returnChatbot(): Int{
+        return chatbot
+    }
+
+    fun set_Chatbot(num: Int){
+        chatbot = num
+    }
     fun reset(){
         finished = 0
     }

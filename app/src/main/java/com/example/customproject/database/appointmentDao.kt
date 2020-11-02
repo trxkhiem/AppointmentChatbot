@@ -25,4 +25,7 @@ interface appointmentDao {
 
     @Query("SELECT * FROM Appointment WHERE email =:userEmail")
     fun checkEmail(userEmail: String): LiveData<Appointment>
+
+    @Query("SELECT * FROM Appointment")
+    fun getAllAppointment(): LiveData<List<Appointment>>
 }

@@ -3,6 +3,8 @@ package com.example.customproject.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import com.example.customproject.utils.BotResponse
 import com.example.customproject.utils.Constants.ADD
 import com.example.customproject.utils.Constants.ADD_APPOINTMENT
 import com.example.customproject.utils.Constants.CANCEL_APPOINTMENT
+import com.example.customproject.utils.Constants.LOGGING
 import com.example.customproject.utils.Constants.RECEIVE_ID
 import com.example.customproject.utils.Constants.SEND_ID
 import com.example.customproject.utils.Constants.UPDATE_APPOINTMENT
@@ -26,6 +29,7 @@ import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var TimetableViewModel: timeViewModel
+    private lateinit var toggle: ActionBarDrawerToggle
     var msgList = mutableListOf<Message>()
     private val TAG = "MainActivity"
     private lateinit var adt: MessagingAdapter
@@ -34,12 +38,30 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         recyclerView()
         clickEvents()
+        toggle = ActionBarDrawerToggle(this, drawer_layout, R.string.open, R.string.close)
+        drawer_layout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         TimetableViewModel = ViewModelProvider(this).get(timeViewModel::class.java)
         TimetableViewModel.addTimeList(timelists)
         customMessage(
             "Hello! Today you are speaking with Lichscaa, I am here to assist you with your appointment process.\n" +
                     "You can either add, delete, update, view an appointment and check available time"
         )
+        nav_view.setNavigationItemSelectedListener {
+            if (it.itemId == R.id.fItem){
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.putExtra(LOGGING, "viewappointment")
+                /**set request code for each intent**/
+                startActivityForResult(intent, 4)
+            } else {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                intent.putExtra(LOGGING, "edittimetable")
+                /**set request code for each intent**/
+                startActivityForResult(intent, 4)
+            }
+            true
+        }
     }
 
 
@@ -176,5 +198,12 @@ class MainActivity : AppCompatActivity() {
                 botResponse(msg)
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -27,7 +27,5 @@ class appointmentRepository(private val appointmentdao: appointmentDao) {
 
     fun getAppointment(email: String, phone: String): LiveData<Appointment> =  appointmentdao.getAppointment(email, phone)
 
-    fun checkEmail(email: String): LiveData<Appointment> =  appointmentdao.checkEmail(email)
-
-    fun checkPhone(phone: String): LiveData<Appointment> =  appointmentdao.checkPhone(phone)
+    fun getAll():LiveData<List<Appointment>> = appointmentdao.getAllAppointment()
 }
