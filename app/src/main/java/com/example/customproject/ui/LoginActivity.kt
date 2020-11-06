@@ -37,7 +37,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivityForResult(intent, 1)
                     } else {
                         val intent = Intent(this@LoginActivity, AdminTimeTable::class.java)
-                        startActivityForResult(intent, 2)
+                        startActivityForResult(intent, 1)
                     }
                 } else {
                     Toast.makeText(this, "Incorrect information. Please try again!", Toast.LENGTH_LONG).show()
@@ -60,10 +60,14 @@ class LoginActivity : AppCompatActivity() {
         if (resultCode != Activity.RESULT_OK) return
         // request code to determine which scenario has been called
         if (requestCode == 1){
-            finish()
-        }
-        if (requestCode == 2){
-            finish()
+            val msg =data?.getStringExtra(Constants.VIEWING)
+            if (msg != null) {
+                val returnIntent = Intent().apply {
+                    putExtra(Constants.VERIFY, msg)
+                }
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
+            }
         }
     }
 }

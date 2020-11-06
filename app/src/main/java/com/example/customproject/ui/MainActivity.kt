@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -196,6 +197,19 @@ class MainActivity : AppCompatActivity() {
             val msg =data?.getStringExtra(VIEWING)
             if (msg != null) {
                 botResponse(msg)
+            }
+        }
+        if (requestCode == 4){
+            val msg =data?.getStringExtra(VERIFY)
+            if (msg != null) {
+                if (msg == "verify incomplete"){
+                    Toast.makeText(this, "You have cancelled the process", Toast.LENGTH_LONG).show()
+                } else if (msg == "View complete"){
+                    Toast.makeText(this, "You have completed viewing the appointment list", Toast.LENGTH_LONG).show()
+                }
+                else if (msg == "update complete"){
+                    Toast.makeText(this, "You have successfully update the information", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }

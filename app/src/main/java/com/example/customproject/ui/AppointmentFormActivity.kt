@@ -35,13 +35,13 @@ class AppointmentFormActivity: AppCompatActivity(), AdapterView.OnItemSelectedLi
         timeVM = ViewModelProvider(this).get(timeViewModel::class.java)
         // Create an ArrayAdapter using a simple spinner layout and days array
         val dayList = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_days)
+        val timeList = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_time)
         val submit = findViewById<Button>(R.id.submit)
         val cancel  = findViewById<Button>(R.id.cancel)
         val userName = findViewById<EditText>(R.id.userName)
         val reason = findViewById<EditText>(R.id.userReason)
         val userEmail = findViewById<EditText>(R.id.userEmail)
         val userPhone = findViewById<EditText>(R.id.userPhone)
-        val timeList = ArrayAdapter(this, android.R.layout.simple_spinner_item, list_of_time)
         // Set layout to use when the list of choices appear
         dayList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         timeList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

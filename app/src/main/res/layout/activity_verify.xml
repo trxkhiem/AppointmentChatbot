@@ -28,6 +28,7 @@
         <EditText
             android:id="@+id/phoneNum"
             android:hint="Please enter your phone number:"
+            android:maxLength="11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
         <LinearLayout

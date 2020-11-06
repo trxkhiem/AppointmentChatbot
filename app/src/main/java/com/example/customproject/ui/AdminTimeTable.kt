@@ -16,6 +16,7 @@ import com.example.customproject.R
 import com.example.customproject.data.Timetable
 import com.example.customproject.utils.Constants
 import com.example.customproject.utils.Constants.LOGGING
+import com.example.customproject.utils.Constants.VIEWING
 
 class AdminTimeTable : AppCompatActivity() {
     private lateinit var TimetableViewModel: timeViewModel
@@ -37,14 +38,16 @@ class AdminTimeTable : AppCompatActivity() {
                         isActive = 0
                         val newtime = Timetable(result.id, result.day, result.time, isActive)
                         TimetableViewModel.updateTime(newtime)
-                        val returnIntent = Intent().apply {putExtra(LOGGING, "complete")}
+                        val returnIntent = Intent().apply {putExtra(VIEWING, "update complete")}
                         setResult(Activity.RESULT_OK, returnIntent)
                         finish()
                     } else if(isavailable.text.toString().toLowerCase() == "no") {
                         isActive = 1
                         val newtime = Timetable(result.id, result.day, result.time, isActive)
                         TimetableViewModel.updateTime(newtime)
-                        val returnIntent = Intent().apply {putExtra(LOGGING, "complete")}
+                        val returnIntent = Intent().apply {
+                            putExtra(VIEWING, "update complete")
+                        }
                         setResult(Activity.RESULT_OK, returnIntent)
                         finish()
                     } else {
@@ -58,7 +61,7 @@ class AdminTimeTable : AppCompatActivity() {
         }
         cancel.setOnClickListener {
             val returnIntent = Intent().apply {
-                putExtra(Constants.VERIFY, "verify incomplete")
+                putExtra(VIEWING, "verify incomplete")
             }
             setResult(Activity.RESULT_OK, returnIntent)
             finish()

@@ -17,7 +17,7 @@ object BotResponse {
         val rand = (0..2).random()
         return when{
             //Hello
-            msg.contains("hello") -> {
+            msg.contains("hello") || msg.contains("hi") || msg.contains("hey") -> {
                 when (rand) {
                     0 -> "Hey nice to meet you, How can I help you today?"
                     1 -> "Hello there, how can I help you today?"
@@ -60,19 +60,6 @@ object BotResponse {
                 val date = dateFormat.format(Date(timer.time))
                 date.toString()
             }
-
-
-            //Open Google
-            msg.contains("open") && msg.contains("google")-> {
-                OPEN_GOOGLE
-            }
-
-
-            //Search on the internet
-            msg.contains("search")-> {
-                OPEN_SEARCH
-            }
-
             //add appointment
             msg.contains("add") || msg.contains("create") || msg.contains("book") && msg.contains("appointment")-> {
                 ADD_APPOINTMENT
